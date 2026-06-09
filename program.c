@@ -6,37 +6,83 @@
 
 #define EMPTY '_'
 #define PIXEL '*'
+#define MAX_OBJECTS 50
 
 char picture[HEIGHT][WIDTH];
 
+struct Shape {
+    int id;
+    int type;   // 1-Line, 2-Rectangle, 3-Circle, 4-Triangle
+    int x1, y1, x2, y2, x3, y3;
+    int radius;
+};
+
+struct Shape objects[MAX_OBJECTS];
+int objectCount = 0;
+int nextId = 1;
+
 void clearPicture() {
-    /*
-        TODO:
-        Fill the entire 2D array picture with EMPTY character '_'.
-    */
+    int i, j;
+
+    for (i = 0; i < HEIGHT; i++) {
+        for (j = 0; j < WIDTH; j++) {
+            picture[i][j] = EMPTY;
+        }
+    }
 }
 
 void displayPicture() {
-    /*
-        TODO:
-        Print the 2D picture array row by row.
-    */
+    int i, j;
+
+    for (i = 0; i < HEIGHT; i++) {
+        for (j = 0; j < WIDTH; j++) {
+            printf("%c", picture[i][j]);
+        }
+        printf("\n");
+    }
 }
 
 void setPixel(int x, int y) {
-    /*
-        TODO:
-        If x and y are inside the canvas,
-        set picture[y][x] to PIXEL character '*'.
-    */
+    if (x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT) {
+        picture[y][x] = PIXEL;
+    }
 }
 
 void drawLine(int x1, int y1, int x2, int y2) {
-    /*
-        TODO:
-        Draw a line from (x1, y1) to (x2, y2)
-        using the '*' character.
-    */
+    int dx = abs(x2 - x1);
+    int dy = abs(y2 - y1);
+    int sx, sy, err, e2;
+
+    if (x1 < x2)
+        sx = 1;
+    else
+        sx = -1;
+
+    if (y1 < y2)
+        sy = 1;
+    else
+        sy = -1;
+
+    err = dx - dy;
+
+    while (1) {
+        setPixel(x1, y1);
+
+        if (x1 == x2 && y1 == y2)
+            break;
+
+        e2 = 2 * err;
+
+        if (e2 > -dy) {
+            err = err - dy;
+            x1 = x1 + sx;
+        }
+
+        if (e2 < dx) {
+            err = err + dx;
+            y1 = y1 + sy;
+        }
+    }
 }
 
 void drawRectangle(int x1, int y1, int x2, int y2) {
