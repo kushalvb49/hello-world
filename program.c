@@ -86,28 +86,80 @@ void drawLine(int x1, int y1, int x2, int y2) {
 }
 
 void drawRectangle(int x1, int y1, int x2, int y2) {
-    /*
-        TODO:
-        Draw a rectangle using four lines.
-        Top-left corner is (x1, y1).
-        Bottom-right corner is (x2, y2).
-    */
+    drawLine(x1, y1, x2, y1);
+    drawLine(x2, y1, x2, y2);
+    drawLine(x2, y2, x1, y2);
+    drawLine(x1, y2, x1, y1);
 }
 
 void drawCircle(int cx, int cy, int radius) {
-    /*
-        TODO:
-        Draw a circle with center (cx, cy)
-        and given radius using '*'.
-    */
+    int x, y;
+    int value;
+
+    for (y = -radius; y <= radius; y++) {
+        for (x = -radius; x <= radius; x++) {
+            value = x * x + y * y;
+
+            if (value >= radius * radius - radius &&
+                value <= radius * radius + radius) {
+                setPixel(cx + x, cy + y);
+            }
+        }
+    }
 }
 
 void drawTriangle(int x1, int y1, int x2, int y2, int x3, int y3) {
-    /*
-        TODO:
-        Draw a triangle by joining the three given points.
-    */
+    drawLine(x1, y1, x2, y2);
+    drawLine(x2, y2, x3, y3);
+    drawLine(x3, y3, x1, y1);
 }
+
+void addObject(int type, int x1, int y1, int x2, int y2, int x3, int y3, int radius) {
+    if (objectCount >= MAX_OBJECTS) {
+        printf("Object limit reached.\n");
+        return;
+    }
+    objects[objectCount].id = nextId;
+    objects[objectCount].type = type;
+    objects[objectCount].x1 = x1;
+    objects[objectCount].y1 = y1;
+    objects[objectCount].x2 = x2;
+    objects[objectCount].y2 = y2;
+    objects[objectCount].x3 = x3;
+    objects[objectCount].y3 = y3;
+    objects[objectCount].radius = radius;
+
+    printf("Object added with ID %d\n", nextId);
+
+    objectCount++;
+    nextId++;
+}
+
+void redrawPicture() {
+    int i;
+
+    clearPicture();
+
+    for (i = 0; i < objectCount; i++) {
+        if (objects[i].type == 1) {
+            drawLine(objects[i].x1, objects[i].y1,
+                     objects[i].x2, objects[i].y2);
+        }
+        else if (objects[i].type == 2) {
+            drawRectangle(objects[i].x1, objects[i].y1,
+                          objects[i].x2, objects[i].y2);
+        }
+        else if (objects[i].type == 3) {
+            drawCircle(objects[i].x1, objects[i].y1,
+                       objects[i].radius);
+        }
+        else if (objects[i].type == 4) {
+            drawTriangle(objects[i].x1, objects[i].y1,
+                         objects[i].x2, objects[i].y2,
+                         objects[i].x3, objects[i].y3);
+        }
+    }
+}   
 
 int main() {
     int choice;
