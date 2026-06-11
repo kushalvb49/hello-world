@@ -161,6 +161,110 @@ void redrawPicture() {
     }
 }   
 
+void listObjects() {
+    int i;
+
+    if (objectCount == 0) {
+        printf("No objects added.\n");
+        return;
+    }
+
+    printf("\nObject List:\n");
+
+    for (i = 0; i < objectCount; i++) {
+        printf("ID: %d  Type: ", objects[i].id);
+
+        if (objects[i].type == 1)
+            printf("Line\n");
+        else if (objects[i].type == 2)
+            printf("Rectangle\n");
+        else if (objects[i].type == 3)
+            printf("Circle\n");
+        else if (objects[i].type == 4)
+            printf("Triangle\n");
+    }
+}
+
+void deleteObject() {
+    int id, i, j;
+    int found = 0;
+
+    printf("Enter object ID to delete: ");
+    scanf("%d", &id);
+
+    for (i = 0; i < objectCount; i++) {
+        if (objects[i].id == id) {
+            found = 1;
+
+            for (j = i; j < objectCount - 1; j++) {
+                objects[j] = objects[j + 1];
+            }
+
+            objectCount--;
+            break;
+        }
+    }
+
+    if (found == 1) {
+        redrawPicture();
+        printf("Object deleted successfully.\n");
+    }
+    else {
+        printf("Object not found.\n");
+    }
+}
+
+void modifyObject() {
+    int id, i;
+    int found = 0;
+
+    printf("Enter object ID to modify: ");
+    scanf("%d", &id);
+
+    for (i = 0; i < objectCount; i++) {
+        if (objects[i].id == id) {
+            found = 1;
+
+            if (objects[i].type == 1 || objects[i].type == 2) {
+                printf("Enter new x1 y1 x2 y2: ");
+                scanf("%d %d %d %d",
+                      &objects[i].x1, &objects[i].y1,
+                      &objects[i].x2, &objects[i].y2);
+            }
+            else if (objects[i].type == 3) {
+                printf("Enter new center x y and radius: ");
+                scanf("%d %d %d",
+                      &objects[i].x1, &objects[i].y1,
+                      &objects[i].radius);
+            }
+            else if (objects[i].type == 4) {
+                printf("Enter new x1 y1 x2 y2 x3 y3: ");
+                scanf("%d %d %d %d %d %d",
+                      &objects[i].x1, &objects[i].y1,
+                      &objects[i].x2, &objects[i].y2,
+                      &objects[i].x3, &objects[i].y3);
+            }
+
+            break;
+        }
+    }
+
+    if (found == 1) {
+        redrawPicture();
+        printf("Object modified successfully.\n");
+    }
+    else {
+        printf("Object not found.\n");
+    }
+}
+
+void clearAllObjects() {
+    objectCount = 0;
+    clearPicture();
+    printf("All objects cleared.\n");
+}
+
+
 int main() {
     int choice;
 
