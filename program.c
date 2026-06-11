@@ -264,7 +264,6 @@ void clearAllObjects() {
     printf("All objects cleared.\n");
 }
 
-
 int main() {
     int choice;
 
@@ -283,6 +282,10 @@ int main() {
         printf("3. Draw Circle\n");
         printf("4. Draw Triangle\n");
         printf("5. Display Picture\n");
+        printf("6. List Objects\n");
+        printf("7. Delete Object\n");
+        printf("8. Modify Object\n");
+        printf("9. Clear All Objects\n");
         printf("0. Exit\n");
         printf("Enter choice: ");
 
@@ -295,6 +298,7 @@ int main() {
             scanf("%d %d %d %d", &x1, &y1, &x2, &y2);
 
             drawLine(x1, y1, x2, y2);
+            addObject(1, x1, y1, x2, y2, 0, 0, 0);
         }
         else if (choice == 2) {
             int x1, y1, x2, y2;
@@ -303,6 +307,7 @@ int main() {
             scanf("%d %d %d %d", &x1, &y1, &x2, &y2);
 
             drawRectangle(x1, y1, x2, y2);
+            addObject(2, x1, y1, x2, y2, 0, 0, 0);
         }
         else if (choice == 3) {
             int cx, cy, radius;
@@ -311,6 +316,7 @@ int main() {
             scanf("%d %d %d", &cx, &cy, &radius);
 
             drawCircle(cx, cy, radius);
+            addObject(3, cx, cy, 0, 0, 0, 0, radius);
         }
         else if (choice == 4) {
             int x1, y1, x2, y2, x3, y3;
@@ -320,10 +326,24 @@ int main() {
                   &x1, &y1, &x2, &y2, &x3, &y3);
 
             drawTriangle(x1, y1, x2, y2, x3, y3);
+            addObject(4, x1, y1, x2, y2, x3, y3, 0);
         }
         else if (choice == 5) {
+            redrawPicture();
             printf("The picture is:\n");
             displayPicture();
+        }
+        else if (choice == 6) {
+            listObjects();
+        }
+        else if (choice == 7) {
+            deleteObject();
+        }
+        else if (choice == 8) {
+            modifyObject();
+        }
+        else if (choice == 9) {
+            clearAllObjects();
         }
         else if (choice == 0) {
             printf("Exiting program.\n");
